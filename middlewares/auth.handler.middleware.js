@@ -1,7 +1,7 @@
 
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = process.env['JWT_SECRET'];
+const jwt_secret = process.env.JWT_SECRET;
 // console.log(require('crypto').randomBytes(256).toString('base64'));
 
 
@@ -15,7 +15,7 @@ const authVerify = (req, res, next) => {
   if (token == null ) return res.status(401).json({message: "Unauthorised access, please add the token"})
    
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, jwt_secret);
     req.user = { userId: decoded.userId };
     return next();
   } catch (error) {
