@@ -4,7 +4,7 @@ require('mongoose-type-url');
 
 const ProductSchema = new mongoose.Schema({
   
-  modelNo: {
+  productId: {
     type: Number,
     required: "Cannot enter a product without model number, please enter model number of the product",
     unique: [true, "Custom unique failed"]

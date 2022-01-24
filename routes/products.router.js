@@ -13,16 +13,16 @@ router.route("/")
     res.status(500).json({ success: false, message: "unable to get products", errMessage: err.message})
   }
 })
-.post(async (req, res) => {
-  try {
-    const product = req.body
-    const NewProduct = new Product(product);
-    const savedProduct = await NewProduct.save();
-    res.status(201).json({ success: true, product: savedProduct })
-  } catch(err) {
-    res.status(500).json({ success: false, message: "unable to add products", errMessage: err.message})
-  }
-})
+// .post(async (req, res) => {
+//   try {
+//     const product = req.body
+//     const NewProduct = new Product(product);
+//     const savedProduct = await NewProduct.save();
+//     res.status(201).json({ success: true, product: savedProduct })
+//   } catch(err) {
+//     res.status(500).json({ success: false, message: "unable to add products", errMessage: err.message})
+//   }
+// })
 
 
 
@@ -41,34 +41,39 @@ router.param("productId", async (req, res, next, productId) => {
 
 
 
-router.route("/:productId")
-.get((req, res) => {
+router.route("/:id")
+.get(async(req, res) => {
   const { product } = req
+  const { id } = req.params;
 
-  product.__v = undefined;
-  console.log({product})
-
-
-  res.json({message: "This api is under construction, please try later"})
+  try {
+    let product = await Product.findById(id);
+    product.__v = undefined;
+    if (product) {
+      return res.status(200).json({ product, success: true, message: "Successful" })
+    } res.status(404).json({ success: false, errorMessage: "The product ID sent has no product associated with it. Check and try again" })
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Something went wrong", errorMessage: error.message })
+  }
 
 })
-.post( async(req, res) => {
-  let { product } = req;
-  const productUpdate = req.body;
+// .post( async(req, res) => {
+//   let { product } = req;
+//   const productUpdate = req.body;
 
-  product = extend(product, productUpdate);
-  product.updated = Date.now();
-  console.log("date: ", product.updated);
-  product = await product.save();
+//   product = extend(product, productUpdate);
+//   product.updated = Date.now();
+//   console.log("date: ", product.updated);
+//   product = await product.save();
 
-  res.json({success: true, product})
+//   res.json({success: true, product})
  
-})
-.delete( async (req, res) =>  {
-  let { product } = req;
-  await product.remove();
-  res.json({success: true, product})
-})
+// })
+// .delete( async (req, res) =>  {
+//   let { product } = req;
+//   await product.remove();
+//   res.json({success: true, product})
+// })
 
 
 module.exports = router

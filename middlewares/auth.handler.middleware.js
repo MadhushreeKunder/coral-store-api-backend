@@ -1,9 +1,7 @@
-
 const jwt = require("jsonwebtoken");
 
-const jwt_secret = process.env.JWT_SECRET;
+const jwt_secret = process.env['JWT_SECRET'];
 // console.log(require('crypto').randomBytes(256).toString('base64'));
-
 
 const authVerify = (req, res, next) => {
 
@@ -11,6 +9,7 @@ const authVerify = (req, res, next) => {
 
   //  const token = req.headers.authorization.split(" ")[1];
   //  for bearer.
+  // console.log({token})
 
   if (token == null ) return res.status(401).json({message: "Unauthorised access, please add the token"})
    
@@ -20,7 +19,7 @@ const authVerify = (req, res, next) => {
     return next();
   } catch (error) {
     console.log(error)
-    return res.status(403).json({ message: "Invalid Token" })
+    return res.status(403).json({ message: "Invalid Token", errMessage: error.message })
   }
 }
 

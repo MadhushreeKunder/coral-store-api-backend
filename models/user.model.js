@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   
-  _id: { type: Schema.Types.ObjectId, ref: 'Auth' },
+  id: { type: Schema.Types.ObjectId, ref: 'Auth' },
   
   wishList: [{ productId: { type: Schema.Types.ObjectId, ref: 'Product' } }],
 
@@ -61,17 +61,5 @@ const addUserToDB = () => {
   })
 }
 
-const addAuthToDB = () => {
-  auth.forEach(async (user) => {
-    const NewAuthUser = new Auth(user);
-    const savedAuthUser = await NewAuthUser.save();
-    console.log(savedAuthUser);
-  })
-  users.forEach(async (user) => {
-    const NewUser = new User(user);
-    const savedUser = await NewUser.save();
-    console.log(savedUser)
-  })
-}
 
-module.exports = { User, addUserToDB, addAuthToDB };
+module.exports = { User, addUserToDB };

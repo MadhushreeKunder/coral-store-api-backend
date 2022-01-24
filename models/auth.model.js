@@ -27,4 +27,18 @@ const AuthSchema = new Schema(
 
 const Auth = mongoose.model("Auth", AuthSchema);
 
-module.exports = { Auth };
+
+const addAuthToDB = () => {
+  auth.forEach(async (user) => {
+    const NewAuthUser = new Auth(user);
+    const savedAuthUser = await NewAuthUser.save();
+    console.log(savedAuthUser);
+  })
+  users.forEach(async (user) => {
+    const NewUser = new User(user);
+    const savedUser = await NewUser.save();
+    console.log(savedUser)
+  })
+}
+
+module.exports = { Auth, addAuthToDB };

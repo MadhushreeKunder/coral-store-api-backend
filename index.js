@@ -14,14 +14,14 @@ const { errorHandler } = require("./middlewares/error-handler.middleware")
 const { routeNotFound } = require("./middlewares/route-not-found.middleware")
 
 const { addProductsToDB } = require("./models/product.model");
-const { addAuthToDB } = require("./models/user.model");
+const { addAuthToDB } = require("./models/auth.model");
 const { addUserToDB } = require("./models/user.model");
 
 const productsV1 = require("./routes/products.router");
 const auth = require("./routes/auth.router");
 const user = require("./routes/user.router");
 
-
+// 61ed7585ebe6ce2757255621
 const PORT = process.env.PORT || 3001;
 
 const app = express();
