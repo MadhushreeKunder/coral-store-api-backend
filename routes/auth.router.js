@@ -10,7 +10,7 @@ const { findUserByUserName, generateToken } = require("../utils.js")
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const user = await findUserByUserName(username);
+    const user = await Auth.findOne({username: username});
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found. Check your user credentials" })
     }
@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   const { username, password, email } = req.body;
-  const userName = await findUserByUserName(username);
+  const userName = await Auth.findOne({username: username});
   if (userName === null) {
     try {
       const NewUser = new Auth({ username, password, email });

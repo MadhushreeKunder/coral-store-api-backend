@@ -22,12 +22,13 @@ const auth = require("./routes/auth.router");
 const user = require("./routes/user.router");
 
 // 61ed7585ebe6ce2757255621
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5001;
 
 const app = express();
 
-app.use(bodyParser.json());
 app.use(cors());
+
+app.use(bodyParser.json());
 
 initialiseDBConnection();
 

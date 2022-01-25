@@ -4,10 +4,9 @@ const jwt_secret = process.env['JWT_SECRET'];
 
 
 const authVerify = (req, res, next) => {
-  //  const token = req.headers.authorization;
-   const token = req.headers.authorization.split(" ")[1];
+   const token = req.headers.authorization;
+  //  const token = req.headers.authorization.split(" ")[1];
   //  for bearer.
-  // console.log({token})
   if (token == null ) return res.status(401).json({message: "Unauthorised access, please add the token"})
    
   try {

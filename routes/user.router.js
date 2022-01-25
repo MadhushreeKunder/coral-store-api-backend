@@ -18,9 +18,9 @@ router.get("/", async (req, res) => {
         { success: false, errorMessage: "unable to find user" });
     }
 
-    const currentUser = await user.populate(['cart.productId'])
+    const currentUser = await user.populate('cart.productId').execPopulate();
     
-    const currentUserWish = await user.populate(['wishlist.productId']);
+    const currentUserWish = await user.populate('wishlist.productId').execPopulate();
 
     const object = populateData(currentUser.cart)
 
@@ -41,7 +41,7 @@ router.route("/cart")
         return res.status(400).json({ success: false, message: "unable to find user" });
       }
 
-      const currentUser = await user.populate(['cart.productId']);
+      const currentUser = await user.populate('cart.productId').execPopulate();
 
       const object = populateData(currentUser.cart)
 
@@ -67,7 +67,7 @@ router.route("/cart")
 
       const savedProduct = await user.save();
 
-      const updatedObj = await savedProduct.populate([{ path: 'cart.productId', select: 'name image price inStock offer' }]);
+      const updatedObj = await savedProduct.populate({ path: 'cart.productId', select: 'name image price inStock offer' }).execPopulate();
 
       const object = populateData(updatedObj.cart)
 
@@ -89,7 +89,7 @@ router.route("/wishlist")
         return res.status(400).json({ success: false, errorMessage: "unable to find user" });
       }
 
-      const currentUser = await user.populate(['wishlist.productId']);
+      const currentUser = await user.populate('wishlist.productId').execPopulate();
 
       return res.status(200).json({ wishlist: currentUser.wishlist, success: true, message: "Success" });
 
@@ -113,7 +113,7 @@ router.route("/wishlist")
 
       const savedProduct = await user.save();
 
-      const updatedObj = await savedProduct.populate(['wishlist.productId']);
+      const updatedObj = await savedProduct.populate('wishlist.productId').execPopulate();
 
       return res.status(201).json({ wishlist: updatedObj.wishlist, success: true, message: "Successful" });
 
@@ -243,7 +243,7 @@ router.route("/address")
 
       const updatedUser = await user.save();
 
-      const newAddressFromDB = updatedUser.addresses.find((item) => item.phoneNumber == newAddress.phoneNumber);
+      const newAddressFromDB = updatedUser.addresses.find((item) => item._id === newAddress._id);
 
       return res.status(201).json({ address: newAddressFromDB, success: true, message: "Successful" });
 

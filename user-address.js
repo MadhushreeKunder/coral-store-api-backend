@@ -1,28 +1,30 @@
 
-// {
-//   "_id": {
-//         "$oid": "61eebfa57e97a5aff0ba3f54"
-//     },
-
-//   "id": "user1",
-  
-//   "wishList": { "productId": "61eaed7b900dc566642978d6"},
-
-//   "cart": [{
-//     "productId": "61eaed7b900dc566642978d6", 
-//     "quantity": 2
-//   }],
-
-//   "addresses": [
-//     {
-//       "name": "Madhushree",
-//       "phoneNumber": 9900000010,
-//       "pinCode": 400093,
-//       "city": "Mumbai",
-//       "address": "B/2, Giriraj Indus Estate, Mahakali Caves Rd, Bandra (west)",
-//       "state": "Maharashtra",
-//       "country": "India"
-//     }
-//   ]
-   
-// }
+router.route("/address")
+  .get(async (req, res) => {
+    const { userId } = req.user;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(400).json({ success: false, errorMessage: "unable to find user" });
+      }
+      return res.status(200).json({ addresses: user.addresses, success: true, message: "Success" })
+    } catch (error) {
+      res.status(500).json({ success: false, errorMessage: "Error while retrieving addresses", errorMessage: error.message })
+    }
+  })
+  .post(async (req, res) => {
+    const { newAddress } = req.body;
+    const { userId } = req.user;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(400).json({ success: false, errorMessage: "unable to find user" });
+      }
+      user.addresses.push(newAddress);
+      const updatedUser = await user.save();
+      const newAddressFromDB = updatedUser.addresses.find((item) => item.phoneNumber === newAddress.phoneNumber);
+      return res.status(201).json({ address: newAddressFromDB, success: true, message: "Successful" });
+    } catch (error) {
+      res.status(500).json({ success: false, errorMessage: "Error while adding address", errorMessage: error.message })
+    }
+  })
