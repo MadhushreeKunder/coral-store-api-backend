@@ -19,8 +19,8 @@ router.post("/login", async (req, res) => {
       return res.status(403).json({ success: false, message: "Wrong Password. Enter correct password" })
     }
     
-    const token = generateToken(user.id);
-    return res.status(200).json({ user, token, success: true, message: "Login Successful" })
+    const token = generateToken(user._id);
+    return res.status(200).json({ user, token, success: true, message: "Login Successful" }) 
 
   } catch (error) {
     return res.status(500).json({ success: false, message: "Something went wrong", errorMessage: error.message })
@@ -39,10 +39,10 @@ router.post("/signup", async (req, res) => {
 
       const savedUser = await NewUser.save();
 
-      const token = generateToken(savedUser.id);
+      const token = generateToken(savedUser._id);
       const NewUserDetails = new User({
-        id: NewUser.id,
-        itemsInWishList: [], itemsInCart: [], addresses: []
+        _id: NewUser._id,
+        wishList: [], cart: [], addresses: []
       });
 
       await NewUserDetails.save();

@@ -20,11 +20,11 @@ router.get("/", async (req, res) => {
 
     const currentUser = await user.populate(['cart.productId'])
     
-    const currentUserWish = await user.populate(['wishList.productId']);
+    const currentUserWish = await user.populate(['wishlist.productId']);
 
     const object = populateData(currentUser.cart)
 
-      return res.status(200).json({ user: { ...user._doc, cart: object, wishList: currentUserWish.wishList }, success: true, message: "Successful" })
+      return res.status(200).json({ user: { ...user._doc, cart: object, wishlist: currentUserWish.wishlist }, success: true, message: "Successful" })
 
   } catch (error) {
     res.status(500).json({ success: false, message: "Couldn't get user details", errorMessage: error.message })
@@ -89,9 +89,9 @@ router.route("/wishlist")
         return res.status(400).json({ success: false, errorMessage: "unable to find user" });
       }
 
-      const currentUser = await user.populate(['wishList.productId']);
+      const currentUser = await user.populate(['wishlist.productId']);
 
-      return res.status(200).json({ wishList: currentUser.wishList, success: true, message: "Success" });
+      return res.status(200).json({ wishlist: currentUser.wishlist, success: true, message: "Success" });
 
     } catch (error) {
       res.status(500).json({ success: false, errorMessage: "couldn't get wishList details", errorMessage: error.message })
@@ -109,13 +109,13 @@ router.route("/wishlist")
         return res.status(400).json({ success: false, errorMessage: "unable to find user" });
       }
 
-      user.wishList.push({ productId: productId.id });
+      user.wishlist.push({ productId: productId.id });
 
       const savedProduct = await user.save();
 
-      const updatedObj = await savedProduct.populate(['wishList.productId']);
+      const updatedObj = await savedProduct.populate(['wishlist.productId']);
 
-      return res.status(201).json({ wishList: updatedObj.wishList, success: true, message: "Successful" });
+      return res.status(201).json({ wishlist: updatedObj.wishlist, success: true, message: "Successful" });
 
     } catch (error) {
 
@@ -193,17 +193,17 @@ router.delete("/wishlist/:productId", async (req, res) => {
       return res.status(400).json({ success: false, message: "unable to find user" });
     }
 
-    const product = user.wishList.find(item => item.productId == productId)
+    const product = user.wishlist.find(item => item.productId == productId)
 
     if (!product) {
       return res.status(404).json({ succes: false, message: "The product id you requested doesn't exists" });
     }
 
-    user.wishList.pull({ _id: product._id });
+    user.wishlist.pull({ _id: product._id });
 
     await user.save();
 
-    return res.status(200).json({ wishList: user.wishList, success: true, message: "Successful" });
+    return res.status(200).json({ wishlist: user.wishlist, success: true, message: "Successful" });
     
   } catch (error) {
     res.status(500).json({ success: false, message: "Couldn't delete item from wishList", errorMessage: error.message })
