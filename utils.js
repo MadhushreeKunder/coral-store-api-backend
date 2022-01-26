@@ -24,8 +24,8 @@ const generateToken = (userId) => {
   return jwt.sign({ userId }, jwt_secret, { expiresIn: '24h' });
 }
 
-const populateData = (itemsIncart) => {
-  return itemsIncart.map((item) => {
+const populateData = (cart) => {
+  return cart.map((item) => {
     const { _id, productId, quantity } = item;
     return { _id, productId: { ...productId._doc, quantity } }
   });

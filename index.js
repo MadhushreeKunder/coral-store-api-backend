@@ -22,7 +22,7 @@ const auth = require("./routes/auth.router");
 const user = require("./routes/user.router");
 
 // 61ed7585ebe6ce2757255621
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 
