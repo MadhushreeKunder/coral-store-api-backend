@@ -38,7 +38,7 @@ app.use('/user-details', authVerify, user);
 
 
 app.get("/" , (req, res) => {
-  res.json({hello: "world"})
+  res.json({hello: "Welcome to Coral-store!"})
 })
 
 
