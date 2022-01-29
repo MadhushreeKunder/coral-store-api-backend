@@ -11,10 +11,10 @@ router.get("/", async (req, res) => {
     if (!user) {
       return res.status(400).json({ success: false, errorMessage: "unable to find user" });
     }
-    const wholeObj = await user.populate('cart.productId').execPopulate();
-    const wholeObjWish = await user.populate('wishList.productId').execPopulate();
-    const object = populateData(wholeObj.cart)
-    return res.status(200).json({ user: { ...user._doc, cart: object, wishList: wholeObjWish.wishList }, success: true, message: "Successful" })
+    const currentUser = await user.populate('cart.productId').execPopulate();
+    const currentUserWish = await user.populate('wishList.productId').execPopulate();
+    const object = populateData(currentUser.cart)
+    return res.status(200).json({ user: { ...user._doc, cart: object, wishList: currentUserWish.wishList }, success: true, message: "Successful" })
   } catch (error) {
     res.status(500).json({ success: false, errorMessage: "Error while retrieving userDetails", errorMessage: error.message })
   }
@@ -28,8 +28,8 @@ router.route("/cart")
       if (!user) {
         return res.status(400).json({ success: false, errorMessage: "unable to find user" });
       }
-      const wholeObj = await user.populate('cart.productId').execPopulate();
-      const object = populateData(wholeObj.cart)
+      const currentUser = await user.populate('cart.productId').execPopulate();
+      const object = populateData(currentUser.cart)
       return res.status(200).json({ cart: object, success: true, message: "Success" })
     } catch (error) {
       res.status(500).json({ success: false, errorMessage: "Error while retrieving cart details", errorMessage: error.message })
@@ -61,8 +61,8 @@ router.route("/wishlist")
       if (!user) {
         return res.status(400).json({ success: false, errorMessage: "unable to find user" });
       }
-      const wholeObj = await user.populate('wishList.productId').execPopulate();
-      return res.status(200).json({ wishList: wholeObj.wishList, success: true, message: "Success" })
+      const currentUser = await user.populate('wishList.productId').execPopulate();
+      return res.status(200).json({ wishList: currentUser.wishList, success: true, message: "Success" })
     } catch (error) {
       res.status(500).json({ success: false, errorMessage: "Error while retrieving wishList details", errorMessage: error.message })
     }

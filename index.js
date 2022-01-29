@@ -7,8 +7,6 @@ const { initialiseDBConnection } = require("./db/db.connect.js")
 
 require('dotenv').config();
 
-
- 
 const { authVerify } = require("./middlewares/auth.handler.middleware")
 const { errorHandler } = require("./middlewares/error-handler.middleware")
 const { routeNotFound } = require("./middlewares/route-not-found.middleware")
