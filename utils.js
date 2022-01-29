@@ -27,7 +27,7 @@ const generateToken = (userId) => {
 const populateData = (cart) => {
   return cart.map((item) => {
     const { _id, productId, quantity } = item;
-    return { _id, productId: { ...productId._doc, quantity } }
+    return { _id, productId: { ...productId.toJSON(), quantity } }
   });
 }
 
