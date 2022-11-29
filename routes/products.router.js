@@ -6,7 +6,7 @@ const { extend } = require("lodash")
 router.route("/")
 .get( async (req, res) => {
   try {
-    const products = await Product.find({});  
+    const products = await Product.find();  
       res.json({ products, success: true })
 
   } catch (err) {

@@ -100,6 +100,7 @@ router.route("/cart/:productId")
       }
       const newProduct = extend(product, updateProduct);
       await user.save();
+      console.log("product update successful")
       return res.status(200).json({ product: newProduct, success: true, message: "Product Updated Successfully" })
     } catch (error) {
       res.status(500).json({ success: false, errorMessage: "Error while updating cart", errorMessage: error.message })
